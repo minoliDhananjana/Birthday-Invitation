@@ -1,38 +1,50 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-function Countdown() {
-  const birthday = new Date(2026, 9, 3, 0, 0, 0);
+// October 3, 2026 at 12:00 AM Osaka, Japan time
+const BIRTHDAY_DATE = new Date("2026-10-03T00:00:00+09:00");
 
-  const calculateTimeLeft = () => {
-    const difference = birthday.getTime() - new Date().getTime();
+function calculateTimeLeft() {
+  const now = new Date();
 
-    if (difference <= 0) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        birthdayReached: true,
-      };
-    }
+  const difference =
+    BIRTHDAY_DATE.getTime() - now.getTime();
 
+  if (difference <= 0) {
     return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor(
-        (difference / (1000 * 60 * 60)) % 24
-      ),
-      minutes: Math.floor(
-        (difference / (1000 * 60)) % 60
-      ),
-      seconds: Math.floor(
-        (difference / 1000) % 60
-      ),
-      birthdayReached: false,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      birthdayReached: true,
     };
-  };
+  }
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  return {
+    days: Math.floor(
+      difference / (1000 * 60 * 60 * 24)
+    ),
+
+    hours: Math.floor(
+      (difference / (1000 * 60 * 60)) % 24
+    ),
+
+    minutes: Math.floor(
+      (difference / (1000 * 60)) % 60
+    ),
+
+    seconds: Math.floor(
+      (difference / 1000) % 60
+    ),
+
+    birthdayReached: false,
+  };
+}
+
+function Countdown() {
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTimeLeft
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -48,10 +60,17 @@ function Countdown() {
         className="countdown-content"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
+        viewport={{
+          once: true,
+          amount: 0.3,
+        }}
+        transition={{
+          duration: 0.8,
+        }}
       >
-        <span className="countdown-butterfly">🦋</span>
+        <span className="countdown-butterfly">
+          🦋
+        </span>
 
         <p className="countdown-small">
           ✨ COUNTING DOWN TO THE MAGIC ✨

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { supabase } from "../lib/supabase";
 
 function RSVP() {
   const [guestName, setGuestName] = useState("");
@@ -29,6 +28,10 @@ function RSVP() {
 
     try {
       setSubmitting(true);
+
+      // Supabase is only needed when a guest submits the form. Loading it
+      // here keeps the relatively large SDK out of the initial page bundle.
+      const { supabase } = await import("../lib/supabase");
 
       const { error } = await supabase
         .from("rsvps")

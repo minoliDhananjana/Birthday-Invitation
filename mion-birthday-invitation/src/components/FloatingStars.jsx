@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 
 function FloatingStars() {
   const stars = useMemo(() => {
@@ -22,28 +21,19 @@ function FloatingStars() {
   return (
     <div className="floating-stars" aria-hidden="true">
       {stars.map((star) => (
-        <motion.span
+        <span
           key={star.id}
           className="floating-star"
           style={{
             left: star.left,
             top: star.top,
             fontSize: `${star.size}px`,
-          }}
-          animate={{
-            opacity: [0.2, 0.85, 0.2],
-            scale: [0.8, 1.2, 0.8],
-            rotate: [0, 15, 0],
-          }}
-          transition={{
-            duration: star.duration,
-            delay: star.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
+            "--star-duration": `${star.duration}s`,
+            "--star-delay": `${star.delay}s`,
           }}
         >
           {star.symbol}
-        </motion.span>
+        </span>
       ))}
     </div>
   );

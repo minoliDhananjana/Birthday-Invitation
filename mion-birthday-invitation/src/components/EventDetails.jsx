@@ -9,7 +9,7 @@ function EventDetails() {
   const details = [
     {
       icon: CalendarDays,
-      title: "Date",
+      title: "Celebration Date",
       value: "04 October 2026",
       subtext: "Sunday",
     },
@@ -23,7 +23,7 @@ function EventDetails() {
       icon: MapPin,
       title: "Venue",
       value: "Osaka Kansai Airport Hotel",
-      subtext: "address : 4066, HIneno, Izumisano-city, Osaka, 598-0021, Japan",
+      subtext: "Address: 4066 Hineno, Izumisano, Osaka 598-0021, Japan",
     },
   ];
 

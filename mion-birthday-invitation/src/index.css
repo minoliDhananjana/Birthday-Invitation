@@ -1726,7 +1726,12 @@ body {
 
   color: #c7a76c;
 
-  opacity: 0.5;
+  opacity: 0.2;
+
+  animation: floating-star-twinkle var(--star-duration, 4s)
+    var(--star-delay, 0s) ease-in-out infinite;
+
+  will-change: transform, opacity;
 
   text-shadow:
     0 0 6px rgba(255, 238, 190, 0.8),
@@ -1735,11 +1740,48 @@ body {
   user-select: none;
 }
 
+@keyframes floating-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8) rotate(0deg);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.2) rotate(15deg);
+  }
+}
+
+/* Skip layout and paint work for sections far below the viewport. */
+.countdown-section,
+.event-section,
+.rsvp-section,
+.footer-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .floating-star {
+    animation: none;
+    will-change: auto;
+  }
+}
+
 /* Smaller stars on mobile */
 
 @media (max-width: 480px) {
   .floating-star {
-    transform: scale(0.8);
+    font-size: 8px !important;
+  }
+
+  .floating-star:nth-child(2n) {
+    display: none;
   }
 }
 

@@ -35,24 +35,31 @@ function App() {
   // OPEN INVITATION
   // =====================================
 
-  const openInvitation = async () => {
-    try {
-      if (audioRef.current) {
-        audioRef.current.volume =
-          NORMAL_MUSIC_VOLUME;
-
-        await audioRef.current.play();
-
-        setMusicPlaying(true);
-      }
-    } catch (error) {
-      console.log(
-        "Music could not start:",
-        error
-      );
-    }
-
+  const openInvitation = () => {
+    // Open the invitation immediately.
+    // Do not wait for the music to download.
     setInvitationOpened(true);
+
+    if (!audioRef.current) return;
+
+    audioRef.current.volume =
+      NORMAL_MUSIC_VOLUME;
+
+    // Start music from the visitor's click so mobile browsers allow it.
+    // The invitation is opened first and audio remains preload="none".
+    audioRef.current
+      .play()
+      .then(() => {
+        setMusicPlaying(true);
+      })
+      .catch((error) => {
+        console.log(
+          "Music could not start:",
+          error
+        );
+
+        setMusicPlaying(false);
+      });
   };
 
   // =====================================
@@ -62,7 +69,7 @@ function App() {
   const toggleMusic = async () => {
     if (!audioRef.current) return;
 
-    // Music currently OFF
+    // Music is currently OFF
     if (audioRef.current.paused) {
       try {
         audioRef.current.volume =
@@ -78,10 +85,12 @@ function App() {
           "Music could not play:",
           error
         );
+
+        setMusicPlaying(false);
       }
     }
 
-    // Music currently ON
+    // Music is currently ON
     else {
       audioRef.current.pause();
 
@@ -127,18 +136,20 @@ function App() {
     <>
       {/* =====================================
           FAIRY BACKGROUND MUSIC
+
+          preload="none" prevents the large
+          MP3 from slowing the first page load.
       ===================================== */}
 
       <audio
         ref={audioRef}
         src={fairyMusic}
         loop
-        preload="auto"
+        preload="none"
       />
 
       {/* =====================================
           MAGICAL FLOATING STARS
-          Visible across the entire invitation
       ===================================== */}
 
       <FloatingStars />
@@ -149,19 +160,11 @@ function App() {
 
       <AnimatePresence mode="wait">
         {!invitationOpened ? (
-          /* =============================
-             OPENING HERO SCREEN
-          ============================= */
-
           <Hero
             key="hero"
             onEnter={openInvitation}
           />
         ) : (
-          /* =============================
-             MAIN INVITATION
-          ============================= */
-
           <motion.div
             key="invitation"
             className="invitation-content"
@@ -175,7 +178,7 @@ function App() {
               opacity: 0,
             }}
             transition={{
-              duration: 0.8,
+              duration: 0.6,
             }}
           >
             {/* MION MESSAGE */}

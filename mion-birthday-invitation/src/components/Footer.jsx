@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import mionFairy from "../assets/images/mion-fairy.png";
+import mionFairy from "../assets/images/mion-fairy.webp";
 
 function Footer() {
   return (
@@ -20,6 +20,8 @@ function Footer() {
           src={mionFairy}
           alt="MION fairy"
           className="footer-baby"
+          loading="lazy"
+          decoding="async"
           animate={{
             y: [0, -6, 0],
           }}
@@ -58,7 +60,7 @@ function Footer() {
         </p>
 
         <p className="footer-date">
-          03 • OCTOBER • 2026
+          CELEBRATION • 04 OCTOBER 2026
         </p>
 
         <div className="footer-bottom">

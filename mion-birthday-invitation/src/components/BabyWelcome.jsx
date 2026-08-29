@@ -1,10 +1,16 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import mionVideo from "../assets/video/mion-welcome-final.webm";
+import mionPoster from "../assets/images/mion-fairy1.webp";
 
 
 
-function BabyWelcome({ musicPlaying, toggleMusic }) {
+function BabyWelcome({
+  musicPlaying,
+  toggleMusic,
+  onMessageStart,
+  onMessageEnd,
+}) {
   const videoRef = useRef(null);
 
   const [videoPlaying, setVideoPlaying] = useState(false);
@@ -27,6 +33,7 @@ function BabyWelcome({ musicPlaying, toggleMusic }) {
       await videoRef.current.play();
 
       setVideoPlaying(true);
+      onMessageStart?.();
     } catch (error) {
       console.error("MION video could not play:", error);
     }
@@ -35,6 +42,14 @@ function BabyWelcome({ musicPlaying, toggleMusic }) {
   const handleVideoEnded = () => {
     setVideoPlaying(false);
     setVideoFinished(true);
+    onMessageEnd?.();
+  };
+
+  const handleVideoPause = () => {
+    if (!videoRef.current?.ended) {
+      setVideoPlaying(false);
+      onMessageEnd?.();
+    }
   };
 
   return (
@@ -95,9 +110,11 @@ function BabyWelcome({ musicPlaying, toggleMusic }) {
             ref={videoRef}
             className="welcome-video"
             src={mionVideo}
+            poster={mionPoster}
             playsInline
-            preload="metadata"
+            preload="none"
             onEnded={handleVideoEnded}
+            onPause={handleVideoPause}
           >
             Your browser does not support video.
           </video>
@@ -164,7 +181,7 @@ function BabyWelcome({ musicPlaying, toggleMusic }) {
         <div className="welcome-divider"></div>
 
         <p className="welcome-date">
-          03 • OCTOBER • 2026
+          MION TURNS ONE • 03 OCTOBER 2026
         </p>
 
         <motion.div
