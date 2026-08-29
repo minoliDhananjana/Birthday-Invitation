@@ -1703,6 +1703,45 @@ body {
     );
 }
 
+/* =============================
+   FLOATING FAIRY STARS
+============================= */
+
+.floating-stars {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+.floating-star {
+  position: absolute;
+
+  color: #c7a76c;
+
+  opacity: 0.5;
+
+  text-shadow:
+    0 0 6px rgba(255, 238, 190, 0.8),
+    0 0 12px rgba(221, 190, 223, 0.4);
+
+  user-select: none;
+}
+
+/* Smaller stars on mobile */
+
+@media (max-width: 480px) {
+  .floating-star {
+    transform: scale(0.8);
+  }
+}
 
 /* MOBILE */
 

@@ -10,6 +10,7 @@ import Countdown from "./components/Countdown";
 import EventDetails from "./components/EventDetails";
 import RSVP from "./components/RSVP";
 import Footer from "./components/Footer";
+import FloatingStars from "./components/FloatingStars";
 
 import fairyMusic from "./assets/audio/fairy-music.mp3";
 
@@ -30,7 +31,10 @@ function App() {
 
   const audioRef = useRef(null);
 
-  // Open invitation + start fairy music
+  // =====================================
+  // OPEN INVITATION
+  // =====================================
+
   const openInvitation = async () => {
     try {
       if (audioRef.current) {
@@ -51,14 +55,16 @@ function App() {
     setInvitationOpened(true);
   };
 
-  // Music ON / OFF button
+  // =====================================
+  // MUSIC ON / OFF
+  // =====================================
+
   const toggleMusic = async () => {
     if (!audioRef.current) return;
 
+    // Music currently OFF
     if (audioRef.current.paused) {
       try {
-        // If MION is talking,
-        // start music at lower volume
         audioRef.current.volume =
           mionMessagePlaying
             ? MESSAGE_MUSIC_VOLUME
@@ -73,17 +79,24 @@ function App() {
           error
         );
       }
-    } else {
+    }
+
+    // Music currently ON
+    else {
       audioRef.current.pause();
 
       setMusicPlaying(false);
     }
   };
 
-  // MION starts talking
+  // =====================================
+  // MION MESSAGE START
+  // =====================================
+
   const handleMionMessageStart = () => {
     setMionMessagePlaying(true);
 
+    // Lower fairy music while MION talks
     if (
       audioRef.current &&
       !audioRef.current.paused
@@ -93,10 +106,14 @@ function App() {
     }
   };
 
-  // MION finishes talking
+  // =====================================
+  // MION MESSAGE END
+  // =====================================
+
   const handleMionMessageEnd = () => {
     setMionMessagePlaying(false);
 
+    // Return fairy music to normal volume
     if (
       audioRef.current &&
       !audioRef.current.paused
@@ -108,7 +125,10 @@ function App() {
 
   return (
     <>
-      {/* Fairy background music */}
+      {/* =====================================
+          FAIRY BACKGROUND MUSIC
+      ===================================== */}
+
       <audio
         ref={audioRef}
         src={fairyMusic}
@@ -116,25 +136,50 @@ function App() {
         preload="auto"
       />
 
+      {/* =====================================
+          MAGICAL FLOATING STARS
+          Visible across the entire invitation
+      ===================================== */}
+
+      <FloatingStars />
+
+      {/* =====================================
+          INVITATION
+      ===================================== */}
+
       <AnimatePresence mode="wait">
         {!invitationOpened ? (
+          /* =============================
+             OPENING HERO SCREEN
+          ============================= */
+
           <Hero
             key="hero"
             onEnter={openInvitation}
           />
         ) : (
+          /* =============================
+             MAIN INVITATION
+          ============================= */
+
           <motion.div
             key="invitation"
+            className="invitation-content"
             initial={{
               opacity: 0,
             }}
             animate={{
               opacity: 1,
             }}
+            exit={{
+              opacity: 0,
+            }}
             transition={{
               duration: 0.8,
             }}
           >
+            {/* MION MESSAGE */}
+
             <BabyWelcome
               musicPlaying={musicPlaying}
               toggleMusic={toggleMusic}
@@ -146,11 +191,19 @@ function App() {
               }
             />
 
+            {/* COUNTDOWN */}
+
             <Countdown />
+
+            {/* EVENT DETAILS */}
 
             <EventDetails />
 
+            {/* RSVP */}
+
             <RSVP />
+
+            {/* FOOTER */}
 
             <Footer />
           </motion.div>
