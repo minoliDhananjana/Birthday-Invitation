@@ -10,10 +10,16 @@ function FloatingStars() {
       duration: Math.random() * 2.5 + 2,
       delay: Math.random() * 3,
       symbol:
-        index % 4 === 0
+        index % 6 === 0
           ? "✦"
-          : index % 3 === 0
+          : index % 5 === 0
           ? "✧"
+          : index % 4 === 0
+          ? "🌸"
+          : index % 3 === 0
+          ? "🦋"
+          : index % 2 === 0
+          ? "🧚"
           : "✨",
     }));
   }, []);

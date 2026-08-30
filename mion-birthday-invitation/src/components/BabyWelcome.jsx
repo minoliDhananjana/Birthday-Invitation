@@ -1,9 +1,11 @@
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+} from "react";
+
 import { motion } from "framer-motion";
+
 import mionVideo from "../assets/video/mion-welcome-final.webm";
-import mionPoster from "../assets/images/mion-fairy1.webp";
-
-
 
 function BabyWelcome({
   musicPlaying,
@@ -13,53 +15,70 @@ function BabyWelcome({
 }) {
   const videoRef = useRef(null);
 
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const [videoFinished, setVideoFinished] = useState(false);
+  const [videoPlaying, setVideoPlaying] =
+    useState(false);
+
+  const [videoFinished, setVideoFinished] =
+    useState(false);
 
   const playMionMessage = async () => {
     if (!videoRef.current) return;
 
     try {
-      // Restart if video has already finished
+      // If already finished,
+      // restart from beginning
       if (videoFinished) {
         videoRef.current.currentTime = 0;
+
         setVideoFinished(false);
       }
 
-      // Make sure MION's voice is ON
+      // MION's voice ON
       videoRef.current.muted = false;
       videoRef.current.volume = 1;
 
       await videoRef.current.play();
 
       setVideoPlaying(true);
-      onMessageStart?.();
+
+      // Lower fairy music
+      if (onMessageStart) {
+        onMessageStart();
+      }
     } catch (error) {
-      console.error("MION video could not play:", error);
+      console.error(
+        "MION video could not play:",
+        error
+      );
     }
   };
 
   const handleVideoEnded = () => {
     setVideoPlaying(false);
-    setVideoFinished(true);
-    onMessageEnd?.();
-  };
 
-  const handleVideoPause = () => {
-    if (!videoRef.current?.ended) {
-      setVideoPlaying(false);
-      onMessageEnd?.();
+    setVideoFinished(true);
+
+    // Restore fairy music
+    if (onMessageEnd) {
+      onMessageEnd();
     }
   };
 
   return (
     <motion.section
       className="welcome-section"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.8,
+      }}
     >
       {/* Decorations */}
+
       <span className="welcome-decoration decor-1">
         ✨
       </span>
@@ -92,6 +111,7 @@ function BabyWelcome({
         </p>
 
         {/* MION VIDEO */}
+
         <motion.div
           className="welcome-video-container"
           initial={{
@@ -110,19 +130,21 @@ function BabyWelcome({
             ref={videoRef}
             className="welcome-video"
             src={mionVideo}
-            poster={mionPoster}
             playsInline
-            preload="none"
+            preload="metadata"
             onEnded={handleVideoEnded}
-            onPause={handleVideoPause}
           >
-            Your browser does not support video.
+            Your browser does not support
+            the video.
           </video>
         </motion.div>
 
         {/* TWO BUTTONS */}
+
         <div className="welcome-buttons">
-          {/* Background Music */}
+
+          {/* MUSIC ON/OFF */}
+
           <button
             type="button"
             className="music-button"
@@ -138,16 +160,21 @@ function BabyWelcome({
               : "♫ Music Off"}
           </button>
 
-          {/* MION Message */}
+          {/* MION MESSAGE */}
+
           <motion.button
             type="button"
             className="mion-message-button"
             onClick={playMionMessage}
             whileHover={{
-              scale: videoPlaying ? 1 : 1.03,
+              scale: videoPlaying
+                ? 1
+                : 1.03,
             }}
             whileTap={{
-              scale: videoPlaying ? 1 : 0.97,
+              scale: videoPlaying
+                ? 1
+                : 0.97,
             }}
             disabled={videoPlaying}
           >
@@ -161,15 +188,22 @@ function BabyWelcome({
 
         <motion.h2
           className="welcome-title"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+          transition={{
+            delay: 0.6,
+          }}
         >
           Hi! I&apos;m MION
         </motion.h2>
 
         <p className="welcome-one">
-          I&apos;m turning <strong>ONE!</strong>
+          I&apos;m turning{" "}
+          <strong>ONE!</strong>
         </p>
 
         <p className="welcome-message">
@@ -178,10 +212,10 @@ function BabyWelcome({
           fairy celebration.
         </p>
 
-        <div className="welcome-divider"></div>
+        <div className="welcome-divider" />
 
         <p className="welcome-date">
-          MION TURNS ONE • 03 OCTOBER 2026
+          04 • OCTOBER • 2026
         </p>
 
         <motion.div

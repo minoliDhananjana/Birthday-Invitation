@@ -14,7 +14,7 @@ function Hero({ onEnter }) {
       {/* Decorative sparkles */}
       <div className="sparkle sparkle-1">✦</div>
       <div className="sparkle sparkle-2">✧</div>
-      <div className="sparkle sparkle-3">✦</div>
+      <div className="sparkle sparkle-3">🌸</div>
 
       <motion.div
         className="hero-content"

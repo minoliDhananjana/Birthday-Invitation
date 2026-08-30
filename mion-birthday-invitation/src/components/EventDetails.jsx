@@ -108,7 +108,7 @@ function EventDetails() {
             magic, laughter and beautiful memories.
           </p>
 
-          <span>🦋</span>
+          <span>🌸</span>
         </div>
       </motion.div>
     </section>
