@@ -1,11 +1,13 @@
 import {
+  useEffect,
   useRef,
   useState,
 } from "react";
 
 import { motion } from "framer-motion";
 
-import mionVideo from "../assets/video/mion-welcome-final.webm";
+import mionTransparentVideo from "../assets/video/mion-welcome-final.webm";
+import mionGreenVideo from "../assets/video/mion-welcome.mp4";
 
 function BabyWelcome({
   musicPlaying,
@@ -13,7 +15,11 @@ function BabyWelcome({
   onMessageStart,
   onMessageEnd,
 }) {
-  const videoRef = useRef(null);
+  const webmVideoRef = useRef(null);
+  const iosVideoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  const animationFrameRef = useRef(null);
 
   const [videoPlaying, setVideoPlaying] =
     useState(false);
@@ -21,48 +27,318 @@ function BabyWelcome({
   const [videoFinished, setVideoFinished] =
     useState(false);
 
-  const playMionMessage = async () => {
-    if (!videoRef.current) return;
+  const [isIOS, setIsIOS] =
+    useState(false);
+
+  // =====================================
+  // DETECT IPHONE / IPAD
+  // =====================================
+
+  useEffect(() => {
+    const userAgent =
+      navigator.userAgent || "";
+
+    const platform =
+      navigator.platform || "";
+
+    const iosDevice =
+      /iPad|iPhone|iPod/.test(userAgent) ||
+      (
+        platform === "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+    setIsIOS(iosDevice);
+  }, []);
+
+  // =====================================
+  // REMOVE GREEN SCREEN ON IOS
+  // =====================================
+
+  const drawIOSFrame = () => {
+    const video = iosVideoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas) return;
+
+    if (
+      video.readyState < 2 ||
+      video.videoWidth === 0
+    ) {
+      animationFrameRef.current =
+        requestAnimationFrame(
+          drawIOSFrame
+        );
+
+      return;
+    }
+
+    const ctx =
+      canvas.getContext(
+        "2d",
+        {
+          willReadFrequently: true,
+        }
+      );
+
+    if (!ctx) return;
+
+    // Keep canvas light for good
+    // mobile performance
+    const targetWidth = Math.min(
+      video.videoWidth,
+      420
+    );
+
+    const ratio =
+      video.videoHeight /
+      video.videoWidth;
+
+    const targetHeight =
+      Math.round(
+        targetWidth * ratio
+      );
+
+    if (
+      canvas.width !== targetWidth ||
+      canvas.height !== targetHeight
+    ) {
+      canvas.width =
+        targetWidth;
+
+      canvas.height =
+        targetHeight;
+    }
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
     try {
-      // If already finished,
-      // restart from beginning
-      if (videoFinished) {
-        videoRef.current.currentTime = 0;
+      const frame =
+        ctx.getImageData(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
 
-        setVideoFinished(false);
+      const pixels =
+        frame.data;
+
+      for (
+        let i = 0;
+        i < pixels.length;
+        i += 4
+      ) {
+        const r = pixels[i];
+        const g = pixels[i + 1];
+        const b = pixels[i + 2];
+
+        const maxRB =
+          Math.max(r, b);
+
+        const greenDifference =
+          g - maxRB;
+
+        /*
+          Strong green background
+          -> completely transparent
+        */
+
+        if (
+          g > 80 &&
+          greenDifference > 55
+        ) {
+          pixels[i + 3] = 0;
+        }
+
+        /*
+          Green edge around MION
+          -> partially transparent
+          + gentle green despill
+        */
+
+        else if (
+          g > 70 &&
+          greenDifference > 24
+        ) {
+          const strength =
+            Math.min(
+              1,
+              (
+                greenDifference -
+                24
+              ) / 31
+            );
+
+          pixels[i + 3] =
+            Math.round(
+              255 *
+                (
+                  1 -
+                  strength
+                )
+            );
+
+          const balancedGreen =
+            Math.round(
+              (
+                r +
+                b
+              ) / 2
+            ) + 10;
+
+          pixels[i + 1] =
+            Math.min(
+              g,
+              balancedGreen
+            );
+        }
       }
 
-      // MION's voice ON
-      videoRef.current.muted = false;
-      videoRef.current.volume = 1;
-
-      await videoRef.current.play();
-
-      setVideoPlaying(true);
-
-      // Lower fairy music
-      if (onMessageStart) {
-        onMessageStart();
-      }
+      ctx.putImageData(
+        frame,
+        0,
+        0
+      );
     } catch (error) {
       console.error(
-        "MION video could not play:",
+        "Canvas chroma key error:",
         error
       );
     }
-  };
 
-  const handleVideoEnded = () => {
-    setVideoPlaying(false);
-
-    setVideoFinished(true);
-
-    // Restore fairy music
-    if (onMessageEnd) {
-      onMessageEnd();
+    if (
+      !video.paused &&
+      !video.ended
+    ) {
+      animationFrameRef.current =
+        requestAnimationFrame(
+          drawIOSFrame
+        );
     }
   };
+
+  // =====================================
+  // DRAW IOS FIRST FRAME
+  // =====================================
+
+  const handleIOSLoaded = () => {
+    const video =
+      iosVideoRef.current;
+
+    if (!video) return;
+
+    try {
+      video.currentTime = 0.01;
+    } catch {
+      // Ignore seek error
+    }
+
+    setTimeout(() => {
+      drawIOSFrame();
+    }, 120);
+  };
+
+  // =====================================
+  // PLAY MION MESSAGE
+  // =====================================
+
+  const playMionMessage =
+    async () => {
+      const video = isIOS
+        ? iosVideoRef.current
+        : webmVideoRef.current;
+
+      if (!video) return;
+
+      try {
+        if (videoFinished) {
+          video.currentTime = 0;
+
+          setVideoFinished(false);
+        }
+
+        // MION voice ON
+        video.muted = false;
+        video.volume = 1;
+
+        await video.play();
+
+        setVideoPlaying(true);
+
+        // Start iPhone canvas rendering
+        if (isIOS) {
+          cancelAnimationFrame(
+            animationFrameRef.current
+          );
+
+          drawIOSFrame();
+        }
+
+        // Lower fairy music
+        if (onMessageStart) {
+          onMessageStart();
+        }
+      } catch (error) {
+        console.error(
+          "MION video could not play:",
+          error
+        );
+      }
+    };
+
+  // =====================================
+  // VIDEO FINISHED
+  // =====================================
+
+  const handleVideoEnded =
+    () => {
+      setVideoPlaying(false);
+
+      setVideoFinished(true);
+
+      if (
+        animationFrameRef.current
+      ) {
+        cancelAnimationFrame(
+          animationFrameRef.current
+        );
+      }
+
+      // Restore fairy music
+      if (onMessageEnd) {
+        onMessageEnd();
+      }
+    };
+
+  // =====================================
+  // CLEANUP
+  // =====================================
+
+  useEffect(() => {
+    return () => {
+      if (
+        animationFrameRef.current
+      ) {
+        cancelAnimationFrame(
+          animationFrameRef.current
+        );
+      }
+    };
+  }, []);
 
   return (
     <motion.section
@@ -110,7 +386,9 @@ function BabyWelcome({
           ✨ A LITTLE MESSAGE FROM MION ✨
         </p>
 
-        {/* MION VIDEO */}
+        {/* =================================
+            MION VIDEO
+        ================================= */}
 
         <motion.div
           className="welcome-video-container"
@@ -126,20 +404,54 @@ function BabyWelcome({
             duration: 0.8,
           }}
         >
-          <video
-            ref={videoRef}
-            className="welcome-video"
-            src={mionVideo}
-            playsInline
-            preload="metadata"
-            onEnded={handleVideoEnded}
-          >
-            Your browser does not support
-            the video.
-          </video>
+          {isIOS ? (
+            <>
+              {/* Hidden green-screen source */}
+
+              <video
+                ref={iosVideoRef}
+                className="ios-source-video"
+                src={mionGreenVideo}
+                playsInline
+                preload="auto"
+                onLoadedData={
+                  handleIOSLoaded
+                }
+                onEnded={
+                  handleVideoEnded
+                }
+              />
+
+              {/* Visible transparent result */}
+
+              <canvas
+                ref={canvasRef}
+                className="welcome-video ios-mion-canvas"
+                aria-label="MION fairy birthday message"
+              />
+            </>
+          ) : (
+            <video
+              ref={webmVideoRef}
+              className="welcome-video"
+              src={
+                mionTransparentVideo
+              }
+              playsInline
+              preload="metadata"
+              onEnded={
+                handleVideoEnded
+              }
+            >
+              Your browser does not
+              support video.
+            </video>
+          )}
         </motion.div>
 
-        {/* TWO BUTTONS */}
+        {/* =================================
+            TWO BUTTONS
+        ================================= */}
 
         <div className="welcome-buttons">
 
@@ -165,7 +477,9 @@ function BabyWelcome({
           <motion.button
             type="button"
             className="mion-message-button"
-            onClick={playMionMessage}
+            onClick={
+              playMionMessage
+            }
             whileHover={{
               scale: videoPlaying
                 ? 1
@@ -176,7 +490,9 @@ function BabyWelcome({
                 ? 1
                 : 0.97,
             }}
-            disabled={videoPlaying}
+            disabled={
+              videoPlaying
+            }
           >
             {videoPlaying
               ? "🧚 MION is Talking..."
@@ -185,6 +501,10 @@ function BabyWelcome({
               : "▶ MION’s Message"}
           </motion.button>
         </div>
+
+        {/* =================================
+            TEXT
+        ================================= */}
 
         <motion.h2
           className="welcome-title"
@@ -203,11 +523,14 @@ function BabyWelcome({
 
         <p className="welcome-one">
           I&apos;m turning{" "}
-          <strong>ONE!</strong>
+          <strong>
+            ONE!
+          </strong>
         </p>
 
         <p className="welcome-message">
-          Come join me for a magical
+          Come join me for a
+          magical
           <br />
           fairy celebration.
         </p>
@@ -221,7 +544,11 @@ function BabyWelcome({
         <motion.div
           className="scroll-hint"
           animate={{
-            y: [0, 5, 0],
+            y: [
+              0,
+              5,
+              0,
+            ],
           }}
           transition={{
             duration: 2,

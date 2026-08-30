@@ -1785,6 +1785,49 @@ body {
   }
 }
 
+
+/* =============================
+   IOS MION VIDEO FIX
+============================= */
+
+/*
+  Keep the original green-screen
+  video available for decoding/audio,
+  but never show it to the visitor.
+*/
+
+.ios-source-video {
+  position: absolute;
+
+  width: 2px;
+  height: 2px;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  left: -9999px;
+
+  top: 0;
+}
+
+/* Canvas becomes the visible video */
+
+.ios-mion-canvas {
+  width: 100%;
+  height: auto;
+
+  display: block;
+
+  background: transparent;
+
+  object-fit: contain;
+}
+
+
+
+
+
 /* MOBILE */
 
 @media (max-width: 480px) {
