@@ -537,21 +537,22 @@ function BabyWelcome({
             delay: 0.6,
           }}
         >
-          Hi! I&apos;m MION
+          Our little fairy MION is 
         </motion.h2>
 
         <p className="welcome-one">
-          I&apos;m turning{" "}
+          turning{" "}
           <strong>
             ONE!
           </strong>
         </p>
 
         <p className="welcome-message">
-          Come join me for a
-          magical
+          With love and joy, we invite you to<br /> 
+          join us for a magical fairy celebration <br />
+          as we celebrate her 
           <br />
-          fairy celebration.
+          very first birthday.
         </p>
 
         <div className="welcome-divider" />

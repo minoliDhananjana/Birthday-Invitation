@@ -2,10 +2,20 @@ import { motion } from "framer-motion";
 import mionFairy from "../assets/images/mion-fairy.webp";
 import fairyHouse from "../assets/images/bashroom.png";
 import Butterfly from "./Butterfly";
+import gardenRabbit from "../assets/images/rabbit.png";
 
 function Footer() {
   return (
     <section className="footer-section">
+      <img
+        src={gardenRabbit}
+        alt=""
+        aria-hidden="true"
+        className="garden-friend footer-rabbit"
+        loading="lazy"
+        decoding="async"
+      />
+
       <img
         src={fairyHouse}
         alt=""

@@ -6,6 +6,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import fairyThree from "../assets/images/fairy3.png";
+import fairyFour from "../assets/images/fairy4.png";
+import Flower from "./Flower";
 
 function EventDetails() {
   const details = [
@@ -38,11 +40,22 @@ function EventDetails() {
 
   return (
     <section className="event-section">
+      <Flower variant="one" className="garden-flower event-garden-flower" />
+
       <img
         src={fairyThree}
         alt=""
         aria-hidden="true"
         className="event-garden-fairy"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={fairyFour}
+        alt=""
+        aria-hidden="true"
+        className="event-garden-fairy-secondary"
         loading="lazy"
         decoding="async"
       />

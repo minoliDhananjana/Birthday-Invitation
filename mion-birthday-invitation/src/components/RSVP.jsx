@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import fairyOne from "../assets/images/fairy1.png";
+import fairyFive from "../assets/images/fairy5.png";
 import butterfly from "../assets/images/butterfly3.png";
 import Butterfly from "./Butterfly";
+import Flower from "./Flower";
 
 function RSVP() {
   const [guestName, setGuestName] = useState("");
@@ -73,11 +75,22 @@ function RSVP() {
 
   return (
     <section className="rsvp-section">
+      <Flower className="garden-flower rsvp-garden-flower" />
+
       <img
         src={fairyOne}
         alt=""
         aria-hidden="true"
         className="rsvp-fairy"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={fairyFive}
+        alt=""
+        aria-hidden="true"
+        className="rsvp-fairy-secondary"
         loading="lazy"
         decoding="async"
       />

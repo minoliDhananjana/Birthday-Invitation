@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import mionFairy1 from "../assets/images/mion-fairy1.webp";
 import butterfly from "../assets/images/butterfly3.png";
 import fairyOne from "../assets/images/fairy1.png";
+import Flower from "./Flower";
 
 function Hero({ onEnter }) {
   return (
@@ -13,6 +14,8 @@ function Hero({ onEnter }) {
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.6 }}
     >
+      <Flower variant="one" className="garden-flower hero-garden-flower" />
+
       <img
         src={fairyOne}
         alt=""
@@ -106,7 +109,7 @@ function Hero({ onEnter }) {
         </p>
 
         <p className="birthday-date">
-          MION TURNS ONE • 03 OCTOBER 2026
+          MION TURNS ONE • 04 OCTOBER 2026
         </p>
 
         <motion.button

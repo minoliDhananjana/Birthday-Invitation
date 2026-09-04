@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import fairySix from "../assets/images/fairy6.png";
 import Butterfly from "./Butterfly";
+import Flower from "./Flower";
+import gardenSnail from "../assets/images/gg.png";
 
 // October 3, 2026 at 12:00 AM Osaka, Japan time
 const BIRTHDAY_DATE = new Date("2026-10-03T00:00:00+09:00");
@@ -58,6 +60,17 @@ function Countdown() {
 
   return (
     <section className="countdown-section">
+      <Flower className="garden-flower countdown-garden-flower" />
+
+      <img
+        src={gardenSnail}
+        alt=""
+        aria-hidden="true"
+        className="garden-friend countdown-snail"
+        loading="lazy"
+        decoding="async"
+      />
+
       <motion.img
         src={fairySix}
         alt=""
