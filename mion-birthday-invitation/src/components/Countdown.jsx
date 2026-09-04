@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import fairySix from "../assets/images/fairy6.png";
+import Butterfly from "./Butterfly";
 
 // October 3, 2026 at 12:00 AM Osaka, Japan time
 const BIRTHDAY_DATE = new Date("2026-10-03T00:00:00+09:00");
@@ -56,6 +58,17 @@ function Countdown() {
 
   return (
     <section className="countdown-section">
+      <motion.img
+        src={fairySix}
+        alt=""
+        aria-hidden="true"
+        className="countdown-fairy"
+        loading="lazy"
+        decoding="async"
+        animate={{ y: [0, -9, 0], rotate: [-3, 2, -3] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
       <motion.div
         className="countdown-content"
         initial={{ opacity: 0, y: 40 }}
@@ -68,9 +81,7 @@ function Countdown() {
           duration: 0.8,
         }}
       >
-        <span className="countdown-butterfly">
-          🦋
-        </span>
+        <Butterfly className="countdown-butterfly" />
 
         <p className="countdown-small">
           ✨ COUNTING DOWN TO THE MAGIC ✨

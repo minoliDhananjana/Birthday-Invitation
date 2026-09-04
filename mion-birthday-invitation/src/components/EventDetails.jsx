@@ -3,7 +3,9 @@ import {
   CalendarDays,
   Clock3,
   MapPin,
+  Sparkles,
 } from "lucide-react";
+import fairyThree from "../assets/images/fairy3.png";
 
 function EventDetails() {
   const details = [
@@ -25,10 +27,26 @@ function EventDetails() {
       value: "Osaka Kansai Airport Hotel",
       subtext: "Address: 4066 Hineno, Izumisano, Osaka 598-0021, Japan",
     },
+    {
+      icon: Sparkles,
+      title: "Dress Code",
+      value: "Pink • Gold • Purple",
+      subtext: "Fairy wings, florals and a little sparkle are welcome",
+      colors: true,
+    },
   ];
 
   return (
     <section className="event-section">
+      <img
+        src={fairyThree}
+        alt=""
+        aria-hidden="true"
+        className="event-garden-fairy"
+        loading="lazy"
+        decoding="async"
+      />
+
       <motion.div
         className="event-content"
         initial={{ opacity: 0, y: 40 }}
@@ -95,6 +113,14 @@ function EventDetails() {
                 <p className="event-card-subtext">
                   {detail.subtext}
                 </p>
+
+                {detail.colors && (
+                  <div className="dress-swatches" aria-hidden="true">
+                    <span className="swatch-pink" />
+                    <span className="swatch-gold" />
+                    <span className="swatch-purple" />
+                  </div>
+                )}
               </motion.div>
             );
           })}

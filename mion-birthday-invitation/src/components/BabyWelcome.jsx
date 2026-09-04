@@ -8,6 +8,9 @@ import { motion } from "framer-motion";
 
 import mionTransparentVideo from "../assets/video/mion-welcome-final.webm";
 import mionGreenVideo from "../assets/video/mion-welcome.mp4";
+import fairyOne from "../assets/images/fairy1.png";
+import fairyThree from "../assets/images/fairy3.png";
+import Butterfly from "./Butterfly";
 
 function BabyWelcome({
   musicPlaying,
@@ -353,15 +356,31 @@ function BabyWelcome({
         duration: 0.8,
       }}
     >
+      <img
+        src={fairyOne}
+        alt=""
+        aria-hidden="true"
+        className="welcome-fairy welcome-fairy-left"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={fairyThree}
+        alt=""
+        aria-hidden="true"
+        className="welcome-fairy welcome-fairy-right"
+        loading="lazy"
+        decoding="async"
+      />
+
       {/* Decorations */}
 
       <span className="welcome-decoration decor-1">
         ✨
       </span>
 
-      <span className="welcome-decoration decor-2">
-        🦋
-      </span>
+      <Butterfly className="welcome-decoration decor-2" />
 
       <span className="welcome-decoration decor-3">
         ✦
@@ -555,9 +574,7 @@ function BabyWelcome({
             repeat: Infinity,
           }}
         >
-          <span className="scroll-butterfly">
-            🦋
-          </span>
+          <Butterfly className="scroll-butterfly" />
 
           <p>
             Scroll to discover the magic

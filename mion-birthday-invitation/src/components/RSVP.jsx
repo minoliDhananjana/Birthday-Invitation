@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import fairyOne from "../assets/images/fairy1.png";
+import butterfly from "../assets/images/butterfly3.png";
+import Butterfly from "./Butterfly";
 
 function RSVP() {
   const [guestName, setGuestName] = useState("");
@@ -70,6 +73,24 @@ function RSVP() {
 
   return (
     <section className="rsvp-section">
+      <img
+        src={fairyOne}
+        alt=""
+        aria-hidden="true"
+        className="rsvp-fairy"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={butterfly}
+        alt=""
+        aria-hidden="true"
+        className="rsvp-butterfly"
+        loading="lazy"
+        decoding="async"
+      />
+
       <motion.div
         className="rsvp-content"
         initial={{ opacity: 0, y: 40 }}
@@ -82,9 +103,7 @@ function RSVP() {
           duration: 0.8,
         }}
       >
-        <span className="rsvp-icon">
-          🦋
-        </span>
+        <Butterfly className="rsvp-icon" />
 
         <p className="rsvp-small">
           WILL YOU JOIN OUR LITTLE FAIRY?

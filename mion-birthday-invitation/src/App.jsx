@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -30,6 +30,25 @@ function App() {
   ] = useState(false);
 
   const audioRef = useRef(null);
+
+  // Always begin the invitation from MION's welcome screen. The cover can be
+  // taller than the viewport, so replacing it without resetting the scroll
+  // position would otherwise reveal the new screen partway down.
+  useLayoutEffect(() => {
+    if (!invitationOpened) return;
+
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+
+    const frame = window.requestAnimationFrame(() => {
+      root.style.scrollBehavior = previousScrollBehavior;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [invitationOpened]);
 
   // =====================================
   // OPEN INVITATION

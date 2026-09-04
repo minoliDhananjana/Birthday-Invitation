@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 
 import mionFairy1 from "../assets/images/mion-fairy1.webp";
+import butterfly from "../assets/images/butterfly3.png";
+import fairyOne from "../assets/images/fairy1.png";
 
 function Hero({ onEnter }) {
   return (
@@ -11,6 +13,35 @@ function Hero({ onEnter }) {
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.6 }}
     >
+      <img
+        src={fairyOne}
+        alt=""
+        aria-hidden="true"
+        className="hero-guide-fairy"
+        fetchPriority="high"
+        decoding="async"
+      />
+
+      <motion.img
+        src={butterfly}
+        alt=""
+        aria-hidden="true"
+        className="hero-butterfly hero-butterfly-left"
+        initial={{ opacity: 0, x: -18, rotate: -22 }}
+        animate={{ opacity: 0.82, x: 0, y: [0, -10, 0], rotate: [-22, -16, -22] }}
+        transition={{ opacity: { duration: 1 }, x: { duration: 1 }, y: { duration: 5, repeat: Infinity, ease: "easeInOut" }, rotate: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
+      />
+
+      <motion.img
+        src={butterfly}
+        alt=""
+        aria-hidden="true"
+        className="hero-butterfly hero-butterfly-right"
+        initial={{ opacity: 0, x: 18, rotate: 18 }}
+        animate={{ opacity: 0.62, x: 0, y: [0, 8, 0], rotate: [18, 12, 18] }}
+        transition={{ opacity: { duration: 1, delay: 0.2 }, x: { duration: 1, delay: 0.2 }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" }, rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
+      />
+
       {/* Decorative sparkles */}
       <div className="sparkle sparkle-1">✦</div>
       <div className="sparkle sparkle-2">✧</div>

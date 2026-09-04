@@ -1,4 +1,7 @@
 import { useMemo } from "react";
+import { createPortal } from "react-dom";
+import Butterfly from "./Butterfly";
+import Flower from "./Flower";
 
 function FloatingStars() {
   const stars = useMemo(() => {
@@ -15,16 +18,16 @@ function FloatingStars() {
           : index % 5 === 0
           ? "✧"
           : index % 4 === 0
-          ? "🌸"
+          ? "flower"
           : index % 3 === 0
-          ? "🦋"
+          ? "butterfly"
           : index % 2 === 0
           ? "🧚"
           : "✨",
     }));
   }, []);
 
-  return (
+  return createPortal(
     <div className="floating-stars" aria-hidden="true">
       {stars.map((star) => (
         <span
@@ -38,10 +41,20 @@ function FloatingStars() {
             "--star-delay": `${star.delay}s`,
           }}
         >
-          {star.symbol}
+          {star.symbol === "butterfly" ? (
+            <Butterfly className="floating-butterfly" />
+          ) : star.symbol === "flower" ? (
+            <Flower
+              variant={star.id % 8 === 0 ? "one" : "default"}
+              className="floating-flower"
+            />
+          ) : (
+            star.symbol
+          )}
         </span>
       ))}
-    </div>
+    </div>,
+    document.body
   );
 }
 
