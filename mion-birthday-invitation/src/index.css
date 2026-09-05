@@ -22,6 +22,25 @@ html {
   scroll-behavior: smooth;
 }
 
+button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(211, 163, 53, 0.9);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 6px rgba(247, 207, 224, 0.58),
+    0 8px 24px rgba(114, 86, 110, 0.18);
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: #fff9fc;
