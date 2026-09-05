@@ -119,8 +119,11 @@ function Hero({ onEnter }) {
         </p>
 
         <p className="birthday-date">
-          MION TURNS ONE • 04 OCTOBER 2026
-        </p>
+          MION TURNS ONE • 03 OCTOBER 2026
+          
+        </p><br/>
+        <p className="description">
+          CELEBRATION • 04 OCTOBER 2026</p>
 
         <motion.button
           type="button"
