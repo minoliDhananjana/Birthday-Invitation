@@ -9,7 +9,8 @@ import { motion } from "framer-motion";
 import mionTransparentVideo from "../assets/video/mion-welcome-final.webm";
 import mionGreenVideo from "../assets/video/mion-welcome.mp4";
 import fairyOne from "../assets/images/fairy1.png";
-import fairyThree from "../assets/images/fairy3.png";
+import fairySix from "../assets/images/fairy6.png";
+import fairyEight from "../assets/images/fairy8.png";
 import Butterfly from "./Butterfly";
 
 function BabyWelcome({
@@ -366,10 +367,19 @@ function BabyWelcome({
       />
 
       <img
-        src={fairyThree}
+        src={fairySix}
         alt=""
         aria-hidden="true"
         className="welcome-fairy welcome-fairy-right"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={fairyEight}
+        alt=""
+        aria-hidden="true"
+        className="welcome-feature-fairy"
         loading="lazy"
         decoding="async"
       />
@@ -537,11 +547,11 @@ function BabyWelcome({
             delay: 0.6,
           }}
         >
-          Our little fairy MION is 
+          Our little fairy MION  
         </motion.h2>
 
         <p className="welcome-one">
-          turning{" "}
+          is turning{" "}
           <strong>
             ONE!
           </strong>

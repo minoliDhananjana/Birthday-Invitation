@@ -137,7 +137,7 @@ function Countdown() {
         )}
 
         <p className="countdown-message">
-          A magical little celebration is getting closer...
+          A magical little celebration awaits on 4th October✨
         </p>
       </motion.div>
     </section>

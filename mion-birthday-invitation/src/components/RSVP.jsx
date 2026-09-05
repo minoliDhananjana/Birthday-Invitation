@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import fairyOne from "../assets/images/fairy1.png";
 import fairyFive from "../assets/images/fairy5.png";
+import fairyEight from "../assets/images/fairy8.png";
 import butterfly from "../assets/images/butterfly3.png";
 import Butterfly from "./Butterfly";
 import Flower from "./Flower";
@@ -91,6 +92,15 @@ function RSVP() {
         alt=""
         aria-hidden="true"
         className="rsvp-fairy-secondary"
+        loading="lazy"
+        decoding="async"
+      />
+
+      <img
+        src={fairyEight}
+        alt=""
+        aria-hidden="true"
+        className="rsvp-feature-fairy"
         loading="lazy"
         decoding="async"
       />

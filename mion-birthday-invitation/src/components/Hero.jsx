@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import mionFairy1 from "../assets/images/mion-fairy1.webp";
 import butterfly from "../assets/images/butterfly3.png";
 import fairyOne from "../assets/images/fairy1.png";
+import fairyNine from "../assets/images/fairy9.png";
 import Flower from "./Flower";
 
 function Hero({ onEnter }) {
@@ -21,6 +22,15 @@ function Hero({ onEnter }) {
         alt=""
         aria-hidden="true"
         className="hero-guide-fairy"
+        fetchPriority="high"
+        decoding="async"
+      />
+
+      <img
+        src={fairyNine}
+        alt=""
+        aria-hidden="true"
+        className="hero-feature-fairy"
         fetchPriority="high"
         decoding="async"
       />

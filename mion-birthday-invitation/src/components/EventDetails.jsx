@@ -5,8 +5,8 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import fairyTwo from "../assets/images/fairy2.png";
 import fairyThree from "../assets/images/fairy3.png";
-import fairyFour from "../assets/images/fairy4.png";
 import Flower from "./Flower";
 
 function EventDetails() {
@@ -33,7 +33,7 @@ function EventDetails() {
       icon: Sparkles,
       title: "Dress Code",
       value: "Pink • Gold • Purple",
-      subtext: "Fairy wings, florals and a little sparkle are welcome",
+      subtext: "Celebrate with us in beautiful shades of pink, gold, and purple.",
       colors: true,
     },
   ];
@@ -43,7 +43,7 @@ function EventDetails() {
       <Flower variant="one" className="garden-flower event-garden-flower" />
 
       <img
-        src={fairyThree}
+        src={fairyTwo}
         alt=""
         aria-hidden="true"
         className="event-garden-fairy"
@@ -52,10 +52,10 @@ function EventDetails() {
       />
 
       <img
-        src={fairyFour}
+        src={fairyThree}
         alt=""
         aria-hidden="true"
-        className="event-garden-fairy-secondary"
+        className="event-corner-fairy-left"
         loading="lazy"
         decoding="async"
       />
